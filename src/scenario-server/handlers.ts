@@ -1,7 +1,7 @@
 import { SaluteHandler, SaluteRequestVariable } from '@salutejs/scenario'
 
-const ERROR_TIME = 1500
-const WARNING_TIME = 800
+const ERROR_TIME = 1000
+const WARNING_TIME = 600
 
 const digits = [
   'одну',
@@ -39,9 +39,11 @@ export const startNewClickHandler: SaluteHandler = ({ req, res, session }) => {
 export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const { timestamp } = req.variables
   const { timestampStart, timePeriod } = session
+  const errorTime = ERROR_TIME + Number(timePeriod)*20
+  const warningTime = WARNING_TIME + Number(timePeriod)*20
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod) * 1000
-  if (Math.abs(difference) < WARNING_TIME) {
+  if (Math.abs(difference) < warningTime) {
     const pronounces = ['<speak>Отлично! Продолжаем</speak>', '<speak>Совершенно верно!</speak>', '<speak>Отлично! Дальше</speak>', '<speak>Молоде\'ц, дальше</speak>', '<speak>Молоде\'ц, продолжаем</speak>']
     res.setPronounceText(getRandomArrayItem(pronounces))
     res.appendCommand({
@@ -49,7 +51,7 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
       flag: false
     })
     res.setEmotion('udovolstvie')
-  } else if (Math.abs(difference) < ERROR_TIME) {
+  } else if (Math.abs(difference) < errorTime) {
     const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем', 'Чуть-чуть ошибся, но сделаем вид что так и должно быть', 'Буквально на полсекундочки ошибся, ну ничего']
     res.setPronounceText(getRandomArrayItem(pronounces))
     res.appendCommand({
