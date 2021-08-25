@@ -52,6 +52,7 @@ const Home: NextPage = () => {
   const onPlayClick = useCallback(() => {
     if (!state.isPlayMode) {
       dispatch(actions.setPlayMode(true))
+      dispatch(actions.changePlayTabContent(`Игра началась! Нажмите на кнопку по истечении ${state.timePeriod} секунд`))
       assistantRef.current?.sendAction({ type: 'START_GAME', payload: {timestamp: Date.now(), timePeriod: state.timePeriod} })
     } else {
       dispatch(actions.setClickDisable(true))
@@ -91,6 +92,7 @@ const Home: NextPage = () => {
             state.tab === 'Играть' &&
             <div className={style.playButton}>
             <Button
+              style={{width: '100%'}}
               text={state.isPlayMode ? 'Клик' : 'Играть'}
               view='primary'
               disabled={state.isClickDisabled}

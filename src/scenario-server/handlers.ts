@@ -25,10 +25,6 @@ export const startGameHandler: SaluteHandler = ({ req, res, session }) => {
   session.timePeriod = timePeriod
   const pronounces = ['Начали игру', 'Поехали', 'Начнем', 'Время пошло\'']
   res.setPronounceText(getRandomArrayItem(pronounces))
-  res.appendCommand({
-    type: 'CHANGE_PLAY_TAB_TEXT',
-    text: `Игра началась! Нажмите на кнопку по истечении ${timePeriod} секунд`
-  })
 }
 
 export const startNewClickHandler: SaluteHandler = ({ req, res, session }) => {

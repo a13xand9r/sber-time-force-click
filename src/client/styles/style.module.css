@@ -22,10 +22,11 @@
 }
 .playButton{
   display: block;
+  width: 100%;
   position: absolute;
   left: auto;
   right: auto;
-  bottom: 0rem;
+  bottom: -2rem;
   display: block;
 }
 .playText{
