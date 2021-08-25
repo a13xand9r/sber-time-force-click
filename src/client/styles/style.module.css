@@ -1,6 +1,7 @@
 .appContainer{
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 30rem;
 }
 
 .cardContent{
@@ -12,7 +13,8 @@
   margin: 0.5rem auto;
 }
 .contentContainer{
-  min-height: 50vh;
+  position: relative;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,8 +22,15 @@
 }
 .playButton{
   display: block;
-  margin-top: 2rem;
+  position: absolute;
+  left: auto;
+  right: auto;
+  bottom: 0rem;
+  display: block;
 }
 .playText{
   white-space: pre-line;
+}
+.header{
+  margin-left: 1.5rem;
 }

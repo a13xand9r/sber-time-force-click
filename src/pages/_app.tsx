@@ -6,7 +6,8 @@ import style from '../client/styles/style.module.css'
 function MyApp({ Component, pageProps }: AppProps) {
   return <DeviceThemeProvider>
     <Header
-      style={{marginLeft: '1.5rem'}}
+      className={style.header}
+      // style={{marginLeft: '1.5rem'}}
       title={'Сила времени'}
     />
     <Component {...pageProps} />

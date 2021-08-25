@@ -9,13 +9,13 @@ import { actions, initialState, reducer, StateType, tabs, TabsType } from '../cl
 import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
 
 const initializeAssistant = (getState: () => StateType) => {
-  // if (process.env.NODE_ENV === 'development') {
-  //   return createSmartappDebugger({
-  //     token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
-  //     initPhrase: 'Запусти сила времени',
-  //     getState
-  //   })
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    return createSmartappDebugger({
+      token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
+      initPhrase: 'Запусти сила времени',
+      getState
+    })
+  }
   return createAssistant({ getState })
 }
 
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
     if (!state.isPlayMode)
     dispatch(actions.changePlayTabContent(
       `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
-      Начав играть отсчет времени начнется сразу же`
+      Начав играть отсчет времени начнется сразу же.`
     ))
   }, [state.character, state.isPlayMode])
   const iconSelect = (tab: TabsType) => {
@@ -63,6 +63,7 @@ const Home: NextPage = () => {
     <>
       <GlobalStyles character={state.character} />
       <Container style={{ marginTop: '2rem' }}>
+        <div className={style.appContainer}>
         <Tabs
           size={'m'}
           view={'clear'}
@@ -88,14 +89,16 @@ const Home: NextPage = () => {
           <ContentCard playContent={state.playTabContent} dispatch={dispatch} timePeriod={state.timePeriod} tab={state.tab} score={5} />
           {
             state.tab === 'Играть' &&
+            <div className={style.playButton}>
             <Button
               text={state.isPlayMode ? 'Клик' : 'Играть'}
               view='primary'
               disabled={state.isClickDisabled}
               onClick={onPlayClick}
-              className={style.playButton}
             />
+            </div>
           }
+        </div>
         </div>
       </Container>
     </>
