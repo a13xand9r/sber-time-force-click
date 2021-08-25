@@ -3,6 +3,11 @@ import { SaluteHandler, SaluteRequestVariable } from '@salutejs/scenario'
 const ONE_SECOND = 1000
 const HALF_SECOND = 500
 
+const digits = [
+  'одну',
+  'две'
+]
+
 export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
   res.setPronounceText('Привет, я помогу тебе начать лучше чувствовать время')
   res.appendBubble('Привет, я помогу тебе начать лучше чувствовать время')
@@ -49,9 +54,11 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   } else {
     const secDifference = Math.round(Math.abs(difference)/1000)
     if (Math.sign(difference) === -1){
-      res.setPronounceText(`Не получилось, надо было нажать через ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'}`)
+      res.setPronounceText(`Не получилось, надо было нажать через ${secDifference <= 2 ? digits[secDifference-1] : secDifference}
+      ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'}`)
     } else if (Math.sign(difference) === 1){
-      res.setPronounceText(`Не получилось, надо было нажать ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} назад`)
+      res.setPronounceText(`Не получилось, надо было нажать ${secDifference <= 2 ? digits[secDifference-1] : secDifference}
+      ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} назад`)
     }
     res.appendCommand({
       type: 'SET_PLAY_MODE',
