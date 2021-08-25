@@ -23,7 +23,7 @@ export const startGameHandler: SaluteHandler = ({ req, res, session }) => {
   const { timestamp, timePeriod } = req.variables
   session.timestampStart = timestamp
   session.timePeriod = timePeriod
-  const pronounces = ['Начали игру', 'Поехали', 'Начнем', 'Время пошло']
+  const pronounces = ['Начали игру', 'Поехали', 'Начнем', 'Время пошло\'']
   res.setPronounceText(getRandomArrayItem(pronounces))
   res.appendCommand({
     type: 'CHANGE_PLAY_TAB_TEXT',
@@ -45,7 +45,7 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const difference = userClickPeriod - Number(timePeriod) * 1000
   if (Math.abs(difference) < warningTime) {
     const pronounces = ['<speak>Отлично! Продолжаем</speak>', '<speak>Совершенно верно!</speak>', '<speak>Отлично! Дальше</speak>', '<speak>Молоде\'ц, дальше</speak>', '<speak>Молоде\'ц, продолжаем</speak>']
-    res.setPronounceText(getRandomArrayItem(pronounces))
+    res.setPronounceText(getRandomArrayItem(pronounces), {ssml: true})
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
