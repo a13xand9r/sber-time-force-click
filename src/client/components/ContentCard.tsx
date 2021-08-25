@@ -11,7 +11,7 @@ export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, p
           Правила игры крайне просты!
           Ты просто выбираешь нужные настройки и нажимаешь кнопку через определенный промежуток времени.
           Проще говоря, если ты выбрал нажимать кнопку каждые 5 секунд, тогда тебе предстоит нажимать кнопку через каждые 5 секунд.
-          За каждое нажатие вовремя тебе начисляется балл.
+          За каждое нажатие вовремя тебе начисляется балл. Отсчет времени начинается после нажатия на кнопку Играть и каждый раз, когда кнопка Клик становится доступной.
         </TextBox>
       case 'Играть':
         return <TextBox>
@@ -26,12 +26,10 @@ export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, p
         <TextBox>
           <TextBoxBigTitle>Выбери уровень:</TextBoxBigTitle>
           Нажимать кнопку нужно будет каждые
-        
         <Stepper
           className={style.stepper}
           step={5}
           value={timePeriod}
-
           min={5}
           max={60}
           showRemove={false}

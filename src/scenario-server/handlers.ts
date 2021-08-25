@@ -10,6 +10,7 @@ const digits = [
 const getRandomArrayItem = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)]
 
 export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
+  session.globalScore = 0
   res.setPronounceText('Привет, я помогу тебе начать лучше чувствовать время')
   res.appendBubble('Привет, я помогу тебе начать лучше чувствовать время')
 }
@@ -23,6 +24,7 @@ export const startGameHandler: SaluteHandler = ({ req, res, session }) => {
   const { timestamp, timePeriod } = req.variables
   session.timestampStart = timestamp
   session.timePeriod = timePeriod
+  session.countScore = 0
   const pronounces = ['Начали игру', 'Поехали', 'Начнем', 'Время пошло\'']
   res.setPronounceText(getRandomArrayItem(pronounces))
 }
@@ -34,7 +36,8 @@ export const startNewClickHandler: SaluteHandler = ({ req, res, session }) => {
 
 export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const { timestamp } = req.variables
-  const { timestampStart, timePeriod } = session
+  const { timestampStart, timePeriod, globalScore, countScore } = session
+  console.log('countScore', countScore)
   const errorTime = ERROR_TIME + Number(timePeriod)*20
   const warningTime = WARNING_TIME + Number(timePeriod)*20
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
@@ -42,11 +45,12 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   if (Math.abs(difference) < warningTime) {
     const pronounces = ['<speak>Отлично! Продолжаем</speak>', '<speak>Совершенно верно!</speak>', '<speak>Отлично! Дальше</speak>', '<speak>Молоде\'ц, дальше</speak>', '<speak>Молоде\'ц, продолжаем</speak>']
     res.setPronounceText(getRandomArrayItem(pronounces), {ssml: true})
+    res.setEmotion('udovolstvie')
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
     })
-    res.setEmotion('udovolstvie')
+    session.countScore = Number(countScore) + 1
   } else if (Math.abs(difference) < errorTime) {
     const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем', 'Чуть-чуть ошибся, но сделаем вид что так и должно быть', 'Буквально на полсекундочки ошибся, ну ничего']
     res.setPronounceText(getRandomArrayItem(pronounces))
@@ -54,6 +58,7 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
       type: 'SET_CLICK_DISABLE',
       flag: false
     })
+    session.countScore = Number(countScore) + 1
   } else {
     const secDifference = Math.round(Math.abs(difference) / 1000)
     if (Math.sign(difference) === -1) {
@@ -74,9 +79,14 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
       res.setPronounceText(getRandomArrayItem(pronounces))
       res.setEmotion('nesoglasie')
     }
+    if (Number(globalScore) < Number(countScore)) session.globalScore = countScore
     res.appendCommand({
       type: 'SET_PLAY_MODE',
       flag: false
+    })
+    res.appendCommand({
+      type: 'CHANGE_SCORE',
+      score: Number(countScore)
     })
   }
 }

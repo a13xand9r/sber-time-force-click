@@ -26,19 +26,20 @@ const Home: NextPage = () => {
     assistantRef.current = initializeAssistant(() => state)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) {
+        console.log(smart_app_data)
         dispatch(smart_app_data)
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
-        assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: {timestamp: Date.now()} })
+          assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
       }
       if (type === 'character') dispatch(actions.setCharacter(character.id))
     })
   }, [])
   useEffect(() => {
     if (!state.isPlayMode)
-    dispatch(actions.changePlayTabContent(
-      `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
-      Начав играть отсчет времени начнется сразу же.`
-    ))
+      dispatch(actions.changePlayTabContent(
+        `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
+      Отсчет времени начнется сразу же после нажатия на кнопку.`
+      ))
   }, [state.character, state.isPlayMode])
   const iconSelect = (tab: TabsType) => {
     switch (tab) {
@@ -53,10 +54,10 @@ const Home: NextPage = () => {
     if (!state.isPlayMode) {
       dispatch(actions.setPlayMode(true))
       dispatch(actions.changePlayTabContent(`Игра началась! Нажмите на кнопку по истечении ${state.timePeriod} секунд`))
-      assistantRef.current?.sendAction({ type: 'START_GAME', payload: {timestamp: Date.now(), timePeriod: state.timePeriod} })
+      assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timestamp: Date.now(), timePeriod: state.timePeriod } })
     } else {
       dispatch(actions.setClickDisable(true))
-      assistantRef.current?.sendAction({ type: 'CLICK', payload: {timestamp: Date.now()} })
+      assistantRef.current?.sendAction({ type: 'CLICK', payload: { timestamp: Date.now() } })
     }
   }, [state.isPlayMode, state.timePeriod])
 
@@ -65,42 +66,47 @@ const Home: NextPage = () => {
       <GlobalStyles character={state.character} />
       <Container style={{ marginTop: '2rem' }}>
         <div className={style.appContainer}>
-        <Tabs
-          size={'m'}
-          view={'clear'}
-          stretch={true}
-          pilled={true}
-          scaleOnPress={true}
-          outlined={true}
-          disabled={false}
-        >
-          {tabs.map(tab => (
-            <TabItem
-              key={tab}
-              isActive={tab === state.tab}
-              tabIndex={1}
-              onClick={() => dispatch(actions.changeTab(tab))}
-              contentLeft={iconSelect(tab)}
-            >
-              {/* {tab} */}
-            </TabItem>
-          ))}
-        </Tabs>
-        <div className={style.contentContainer}>
-          <ContentCard playContent={state.playTabContent} dispatch={dispatch} timePeriod={state.timePeriod} tab={state.tab} score={5} />
-          {
-            state.tab === 'Играть' &&
-            <div className={style.playButton}>
-            <Button
-              style={{width: '100%'}}
-              text={state.isPlayMode ? 'Клик' : 'Играть'}
-              view='primary'
-              disabled={state.isClickDisabled}
-              onClick={onPlayClick}
-            />
-            </div>
-          }
-        </div>
+          <Tabs
+            size={'m'}
+            view={'clear'}
+            stretch={true}
+            pilled={true}
+            scaleOnPress={true}
+            outlined={true}
+            disabled={false}
+          >
+            {tabs.map(tab => (
+              <TabItem
+                key={tab}
+                isActive={tab === state.tab}
+                tabIndex={1}
+                onClick={() => dispatch(actions.changeTab(tab))}
+                contentLeft={iconSelect(tab)}
+              >
+                {/* {tab} */}
+              </TabItem>
+            ))}
+          </Tabs>
+          <div className={style.contentContainer}>
+            <ContentCard
+              playContent={state.playTabContent}
+              dispatch={dispatch}
+              timePeriod={state.timePeriod}
+              tab={state.tab}
+              score={state.score} />
+            {
+              state.tab === 'Играть' &&
+              <div className={style.playButton}>
+                <Button
+                  style={{ width: '100%' }}
+                  text={state.isPlayMode ? 'Клик' : 'Играть'}
+                  view='primary'
+                  disabled={state.isClickDisabled}
+                  onClick={onPlayClick}
+                />
+              </div>
+            }
+          </div>
         </div>
       </Container>
     </>

@@ -7,7 +7,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   return <DeviceThemeProvider>
     <Header
       className={style.header}
-      // style={{marginLeft: '1.5rem'}}
       title={'Сила времени'}
     />
     <Component {...pageProps} />

@@ -1,6 +1,7 @@
 import { CharacterType } from './components/GlobalStyle';
 
 export const initialState = {
+  score: 0,
   isPlayMode: false,
   playTabContent: '',
   isClickDisabled: false,
@@ -23,6 +24,8 @@ export const reducer = (state: StateType, action: ActionsType): StateType => {
       return {...state, timePeriod: action.value}
     case 'CHANGE_PLAY_TAB_TEXT':
       return {...state, playTabContent: action.text}
+    case 'CHANGE_SCORE':
+      return {...state, score: action.score}
     default: return state
   }
 }
@@ -34,6 +37,7 @@ export const actions = {
   setClickDisable: (flag: boolean) => ({type: 'SET_CLICK_DISABLE', flag} as const),
   changeTimePeriod: (value: number) => ({type: 'CHANGE_TIME_PERIOD', value} as const),
   changePlayTabContent: (text: string) => ({type: 'CHANGE_PLAY_TAB_TEXT', text} as const),
+  changeScore: (score: number) => ({type: 'CHANGE_SCORE', score} as const),
 }
 
 export const tabs = ['Играть', 'Настройки', 'Правила', 'Лучший счет'] as const
