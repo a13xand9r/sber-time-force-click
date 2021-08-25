@@ -1,7 +1,7 @@
 import { SaluteHandler, SaluteRequestVariable } from '@salutejs/scenario'
 
-const ONE_SECOND = 1000
-const HALF_SECOND = 500
+const ERROR_TIME = 1500
+const WARNING_TIME = 800
 
 const digits = [
   'одну',
@@ -41,15 +41,15 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const { timestampStart, timePeriod } = session
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod) * 1000
-  if (Math.abs(difference) < HALF_SECOND) {
-    const pronounces = ['Отлично! Продолжаем', 'Совершенно верно!', 'Отлично! Дальше', 'Молодец, дальше', 'Молодец, продолжаем']
+  if (Math.abs(difference) < WARNING_TIME) {
+    const pronounces = ['<speak>Отлично! Продолжаем</speak>', '<speak>Совершенно верно!</speak>', '<speak>Отлично! Дальше</speak>', '<speak>Молоде\'ц, дальше</speak>', '<speak>Молоде\'ц, продолжаем</speak>']
     res.setPronounceText(getRandomArrayItem(pronounces))
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
     })
     res.setEmotion('udovolstvie')
-  } else if (Math.abs(difference) < ONE_SECOND) {
+  } else if (Math.abs(difference) < ERROR_TIME) {
     const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем', 'Чуть-чуть ошибся, но сделаем вид что так и должно быть', 'Буквально на полсекундочки ошибся, ну ничего']
     res.setPronounceText(getRandomArrayItem(pronounces))
     res.appendCommand({
@@ -62,7 +62,7 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
       const pronounces = [
         `Не получилось, надо было нажать через ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
       ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'}`,
-        `Ошбика, на ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
+        `Ошибка, на ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
       ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} раньше`
       ]
       res.setPronounceText(getRandomArrayItem(pronounces))
@@ -70,7 +70,7 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
       const pronounces = [
         `Не получилось, надо было нажать ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
       ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} назад`,
-        `Ошбика, на ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
+        `Ошибка, на ${secDifference <= 2 ? digits[secDifference - 1] : secDifference}
       ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} позже`
       ]
       res.setPronounceText(getRandomArrayItem(pronounces))
