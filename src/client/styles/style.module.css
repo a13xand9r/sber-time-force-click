@@ -1,0 +1,27 @@
+.appContainer{
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cardContent{
+  width: 100%;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.stepper{
+  margin: 0.5rem auto;
+}
+.contentContainer{
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.playButton{
+  display: block;
+  margin-top: 2rem;
+}
+.playText{
+  white-space: pre-line;
+}
