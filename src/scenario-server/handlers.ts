@@ -35,13 +35,13 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod)*1000
   if (Math.abs(difference) < HALF_SECOND) {
-    res.appendBubble('Отлично! Продолжаем')
+    res.setPronounceText('Отлично! Продолжаем')
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
     })
   } else if (Math.abs(difference) < ONE_SECOND){
-    res.appendBubble('Почти получилось, но можно закрыть глаза. Продолжаем')
+    res.setPronounceText('Почти получилось, но можно закрыть глаза. Продолжаем')
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
@@ -49,9 +49,9 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   } else {
     const secDifference = Math.round(Math.abs(difference)/1000)
     if (Math.sign(difference) === -1){
-      res.appendBubble(`Не получилось, надо было нажать через ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'}`)
+      res.setPronounceText(`Не получилось, надо было нажать через ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'}`)
     } else if (Math.sign(difference) === 1){
-      res.appendBubble(`Не получилось, надо было нажать ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} назад`)
+      res.setPronounceText(`Не получилось, надо было нажать ${secDifference} ${secDifference <= 1 ? 'секунду' : secDifference <= 4 ? 'секунды' : 'секунд'} назад`)
     }
     res.appendCommand({
       type: 'SET_PLAY_MODE',
