@@ -40,13 +40,15 @@ export const clickHandler: SaluteHandler = ({ req, res, session }) => {
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod)*1000
   if (Math.abs(difference) < HALF_SECOND) {
-    res.setPronounceText('Отлично! Продолжаем')
+    const pronounces = ['Отлично! Продолжаем', 'Совершенно верно!', 'Отлично! Дальше', 'Молодец, дальше', 'Молодец, продолжаем']
+    res.setPronounceText(pronounces[Math.floor(Math.random()*pronounces.length)])
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
     })
   } else if (Math.abs(difference) < ONE_SECOND){
-    res.setPronounceText('Почти получилось, но можно закрыть глаза. Продолжаем')
+    const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем', 'Чуть-чуть ошибся, но сделаем вид что так и должно быть', 'Буквально на полсекундочки ошибся, ну ничего']
+    res.setPronounceText(pronounces[Math.floor(Math.random()*pronounces.length)])
     res.appendCommand({
       type: 'SET_CLICK_DISABLE',
       flag: false
