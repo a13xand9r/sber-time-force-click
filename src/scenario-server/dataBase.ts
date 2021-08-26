@@ -1,56 +1,50 @@
 import { MongoClient } from 'mongodb'
 
 const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_CLIENT ?? '')
-let scheduleDB: any
-let homeTasksDB: any
+let scoreDB: any
 let isMongoConnected = false
 export const start = async () => {
+  console.log('MongoDB trying connect')
   try {
     await client.connect()
     isMongoConnected = true
     console.log('MongoDB connected')
-    scheduleDB = client.db().collection('schedule')
-    homeTasksDB = client.db().collection('homeTasks')
+    scoreDB = client.db().collection('score')
   } catch (err) {
     console.log(err)
   }
 }
 
-// export const getSchedule = async (userId: string): Promise<ScheduleType> => {
-//   try {
-//     if (!isMongoConnected){
-//       await client.connect()
-//       scheduleDB = client.db().collection('schedule')
-//     }
-//     const user = await scheduleDB.findOne({ userId })
-//     if (user) {
-//       return user.schedule
-//     } else {
-//       return emptySchedule
-//     }
-//   } catch (err) {
-//     console.log('mongoDB error: ', err)
-//     return emptySchedule
-//   }
-// }
+export const getScore = async (userId: string): Promise<number> => {
+  try {
+    if (!isMongoConnected){
+      await client.connect()
+      scoreDB = client.db().collection('score')
+    }
+    // console.log(scoreDB)
+    const user = await scoreDB.findOne({ userId })
+    return user.score
+  } catch (err) {
+    console.log('mongoDB get score error: ', err)
+    return 0
+  }
+}
 
-// export const changeSchedule = async (userId: string, newSchedule: ScheduleType): Promise<ScheduleType> => {
-//   try {
-//     if (!isMongoConnected){
-//       await client.connect()
-//       scheduleDB = client.db().collection('schedule')
-//     }
-//     const user = await scheduleDB.findOne({ userId })
-//     if (user) {
-//       await scheduleDB.updateOne({ userId }, {
-//         $set: { userId, schedule: newSchedule }
-//       })
-//     } else {
-//       scheduleDB.insertOne({ userId, schedule: newSchedule })
-//     }
-//     return newSchedule
-//   } catch (err) {
-//     console.log('mongoDB error: ', err)
-//     return emptySchedule
-//   }
-// }
+export const changeScore = async (userId: string, newScore: number) => {
+  try {
+    if (!isMongoConnected){
+      await client.connect()
+      scoreDB = client.db().collection('score')
+    }
+    const user = await scoreDB.findOne({ userId })
+    if (user) {
+      await scoreDB.updateOne({ userId }, {
+        $set: { userId, score: newScore }
+      })
+    } else {
+      scoreDB.insertOne({ userId, score: newScore })
+    }
+  } catch (err) {
+    console.log('mongoDB error: ', err)
+  }
+}

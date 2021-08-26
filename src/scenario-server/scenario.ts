@@ -1,6 +1,6 @@
 import { createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { clickHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
+import { clickHandler, getScoreHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
 
 const storage = new SaluteMemoryStorage()
 const { action } = createMatchers<SaluteRequest>()
@@ -17,6 +17,10 @@ const userScenario = createUserScenario({
   startNewClick: {
     match: action('START_NEW_CLICK'),
     handle: startNewClickHandler
+  },
+  getScore: {
+    match: action('GET_SCORE'),
+    handle: getScoreHandler
   }
 })
 

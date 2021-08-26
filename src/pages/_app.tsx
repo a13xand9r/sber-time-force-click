@@ -6,6 +6,7 @@ import style from '../client/styles/style.module.css'
 function MyApp({ Component, pageProps }: AppProps) {
   return <DeviceThemeProvider>
     <Header
+      minimize={true}
       className={style.header}
       title={'Сила времени'}
     />

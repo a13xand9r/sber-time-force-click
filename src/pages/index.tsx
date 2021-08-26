@@ -31,7 +31,10 @@ const Home: NextPage = () => {
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
           assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
       }
-      if (type === 'character') dispatch(actions.setCharacter(character.id))
+      if (type === 'character') {
+        dispatch(actions.setCharacter(character.id))
+        assistantRef.current?.sendAction({ type: 'GET_SCORE', payload: {} })
+      }
     })
   }, [])
   useEffect(() => {
@@ -93,7 +96,9 @@ const Home: NextPage = () => {
               dispatch={dispatch}
               timePeriod={state.timePeriod}
               tab={state.tab}
-              score={state.score} />
+              score={state.score}
+              character={state.character}
+            />
             {
               state.tab === 'Играть' &&
               <div className={style.playButton}>

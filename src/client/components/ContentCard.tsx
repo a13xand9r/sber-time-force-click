@@ -2,16 +2,19 @@ import { Card, CardBody, CardContent, CardMedia, CardParagraph1, TextBox, TextBo
 import React, { Dispatch, FC, useState } from 'react'
 import { actions, ActionsType, TabsType } from '../store'
 import style from '../styles/style.module.css'
+import { CharacterType } from './GlobalStyle'
 
-export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, playContent }) => {
+export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, playContent, character }) => {
   const selectTab = () => {
     switch (tab) {
       case 'Правила':
         return <TextBox>
           Правила игры крайне просты!
-          Ты просто выбираешь нужные настройки и нажимаешь кнопку через определенный промежуток времени.
-          Проще говоря, если ты выбрал нажимать кнопку каждые 5 секунд, тогда тебе предстоит нажимать кнопку через каждые 5 секунд.
-          За каждое нажатие вовремя тебе начисляется балл. Отсчет времени начинается после нажатия на кнопку Играть и каждый раз, когда кнопка Клик становится доступной.
+          {character === 'joy' ? ' Ты просто выбираешь нужные настройки и нажимаешь ' : ' Вы просто выбираете нужные настройки и нажимаете '}
+          кнопку через определенный промежуток времени.
+          Проще говоря, если {character === 'joy' ? 'ты выбрал нажимать кнопку каждые 5 секунд, тогда тебе' :
+           'вы выбрали нажимать кнопку каждые 5 секунд, тогда вам'}  предстоит нажимать кнопку через каждые 5 секунд.
+          За каждое нажатие вовремя {character === 'joy' ? 'тебе' : 'вам'} начисляется балл. Отсчет времени начинается после нажатия на кнопку Играть и каждый раз, когда кнопка Клик становится доступной.
         </TextBox>
       case 'Играть':
         return <TextBox>
@@ -24,7 +27,7 @@ export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, p
       case 'Настройки':
         return <>
         <TextBox>
-          <TextBoxBigTitle>Выбери уровень:</TextBoxBigTitle>
+          <TextBoxBigTitle>{character === 'joy' ? 'Выбери' : 'Выберите'} уровень:</TextBoxBigTitle>
           Нажимать кнопку нужно будет каждые
         <Stepper
           className={style.stepper}
@@ -56,6 +59,7 @@ export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, p
 
 type PropsType = {
   tab: TabsType
+  character: CharacterType
   score: number
   timePeriod: number
   dispatch: Dispatch<ActionsType>
