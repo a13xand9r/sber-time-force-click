@@ -16,8 +16,9 @@ export const runAppHandler: SaluteHandler = ({ req, res }) => {
   res.appendBubble(`Привет, я помогу тебе начать лучше чувствовать время.`)
 }
 
-export const getScoreHandler: SaluteHandler = async ({ req, res }) => {
+export const getScoreHandler: SaluteHandler = async ({ req, res, session }) => {
   const score = await getScore(req.request.uuid.sub)
+  session.globalScore = score
   res.appendCommand({
     type: 'CHANGE_SCORE',
     score

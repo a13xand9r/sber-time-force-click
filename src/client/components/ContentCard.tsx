@@ -22,7 +22,7 @@ export const ContentCard: FC<PropsType> = ({ tab, score, timePeriod, dispatch, p
         </TextBox>
       case 'Лучший счет':
         return <>
-          Твой лучший счет: {score} {score === 1 ? 'очко' : score <= 4 && score >= 2 ? 'очка' : 'очков' }
+          {character === 'joy' ? 'Твой' : 'Ваш'} лучший счет: {score} {score === 1 ? 'очко' : score <= 4 && score >= 2 ? 'очка' : 'очков' }
         </>
       case 'Настройки':
         return <>

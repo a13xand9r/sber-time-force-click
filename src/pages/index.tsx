@@ -26,7 +26,7 @@ const Home: NextPage = () => {
     assistantRef.current = initializeAssistant(() => state)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) {
-        console.log(smart_app_data)
+        // console.log(smart_app_data)
         dispatch(smart_app_data)
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
           assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
