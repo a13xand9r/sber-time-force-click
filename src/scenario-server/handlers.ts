@@ -12,7 +12,7 @@ const getRandomArrayItem = (arr: any[]) => arr[Math.floor(Math.random() * arr.le
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   start()
-  res.setPronounceText(`Привет, я помогу тебе начать лучше чувствовать время.`)
+  res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
   res.appendBubble(`Привет, я помогу тебе начать лучше чувствовать время.`)
 }
 
