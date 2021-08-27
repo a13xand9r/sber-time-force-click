@@ -38,11 +38,12 @@ const Home: NextPage = () => {
     })
   }, [])
   useEffect(() => {
-    if (!state.isPlayMode)
+    if (!state.isPlayMode){
       dispatch(actions.changePlayTabContent(
         `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
       Отсчет времени начнется сразу же после нажатия на кнопку.`
       ))
+    }
   }, [state.character, state.isPlayMode])
   const iconSelect = (tab: TabsType) => {
     switch (tab) {
@@ -56,14 +57,13 @@ const Home: NextPage = () => {
   const onPlayClick = useCallback(() => {
     if (!state.isPlayMode) {
       dispatch(actions.setPlayMode(true))
-      console.log(state.character)
       dispatch(actions.changePlayTabContent(`Игра началась! ${state.character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку по истечении ${state.timePeriod} секунд`))
       assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timestamp: Date.now(), timePeriod: state.timePeriod } })
     } else {
       dispatch(actions.setClickDisable(true))
       assistantRef.current?.sendAction({ type: 'CLICK', payload: { timestamp: Date.now() } })
     }
-  }, [state.isPlayMode, state.timePeriod])
+  }, [state.isPlayMode, state.timePeriod, state.character])
 
   return (
     <>
