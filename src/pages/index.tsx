@@ -12,7 +12,7 @@ const initializeAssistant = (getState: () => StateType) => {
   if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
       token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
-      initPhrase: 'Запусти сила времени',
+      initPhrase: 'Запусти чувство времени',
       getState
     })
   }
@@ -56,7 +56,8 @@ const Home: NextPage = () => {
   const onPlayClick = useCallback(() => {
     if (!state.isPlayMode) {
       dispatch(actions.setPlayMode(true))
-      dispatch(actions.changePlayTabContent(`Игра началась! Нажмите на кнопку по истечении ${state.timePeriod} секунд`))
+      console.log(state.character)
+      dispatch(actions.changePlayTabContent(`Игра началась! ${state.character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку по истечении ${state.timePeriod} секунд`))
       assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timestamp: Date.now(), timePeriod: state.timePeriod } })
     } else {
       dispatch(actions.setClickDisable(true))
