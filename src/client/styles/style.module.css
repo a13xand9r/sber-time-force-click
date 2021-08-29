@@ -1,6 +1,7 @@
 .appContainer{
-  margin: 1rem auto;
+  margin: 0 auto;
   width: 100%;
+  height: 100%;
   max-width: 30rem;
 }
 
@@ -13,8 +14,8 @@
   margin: 0.5rem auto;
 }
 .contentContainer{
-  position: relative;
-  min-height: 40vh;
+  /* position: relative; */
+  min-height: 35vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,10 +24,11 @@
 .playButton{
   display: block;
   width: 100%;
+  max-width: 30rem;
   position: absolute;
   left: auto;
   right: auto;
-  bottom: -2rem;
+  bottom: 8rem;
   display: block;
 }
 .playText{

@@ -26,7 +26,10 @@ const Home: NextPage = () => {
     assistantRef.current = initializeAssistant(() => state)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) {
-        // console.log(smart_app_data)
+        console.log(smart_app_data)
+        if (smart_app_data.type === 'START_GAME'){
+          assistantRef.current?.sendAction({ type: 'GET_START_SOUND', payload: {}})
+        }
         dispatch(smart_app_data)
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
           assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
@@ -60,9 +63,10 @@ const Home: NextPage = () => {
       dispatch(actions.changePlayTabContent(`Игра началась! ${state.character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку по истечении ${state.timePeriod} секунд`))
       assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timestamp: Date.now(), timePeriod: state.timePeriod } })
     } else {
-      dispatch(actions.setClickDisable(true))
+      // dispatch(actions.setClickDisable(true))
       assistantRef.current?.sendAction({ type: 'CLICK', payload: { timestamp: Date.now() } })
     }
+    dispatch(actions.setClickDisable(true))
   }, [state.isPlayMode, state.timePeriod, state.character])
 
   return (

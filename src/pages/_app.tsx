@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Header
       // minimize={true}
       className={style.header}
-      title={'Сила времени'}
+      title={'Чувство времени'}
     />
     <Component {...pageProps} />
   </DeviceThemeProvider>
