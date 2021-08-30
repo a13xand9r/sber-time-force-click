@@ -68,7 +68,7 @@ const Home: NextPage = () => {
   return (
     <>
       <GlobalStyles character={state.character} />
-      <Container style={{ marginTop: '2rem' }}>
+      <Container style={{ marginTop: '40px' }}>
         <div className={style.appContainer}>
           <Tabs
             size={'m'}
