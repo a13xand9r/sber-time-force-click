@@ -1,8 +1,8 @@
 import { SaluteHandler, SaluteRequestVariable } from '@salutejs/scenario'
 import { changeScore, getScore, start } from './dataBase'
 
-const ERROR_TIME = 1000
-const WARNING_TIME = 600
+const ERROR_TIME = 800
+const WARNING_TIME = 500
 
 const digits = [
   'одну',
@@ -71,12 +71,12 @@ export const getStartSoundHandler: SaluteHandler = ({ req, res, session }) => {
 export const clickHandler: SaluteHandler = async ({ req, res, session }, dispatch) => {
   const { timestamp } = req.variables
   const { timestampStart, timePeriod, globalScore, countScore } = session
-  const errorTime = ERROR_TIME + Number(timePeriod) * 20
-  const warningTime = WARNING_TIME + Number(timePeriod) * 20
+  const errorTime = ERROR_TIME + Number(timePeriod) * 25
+  const warningTime = WARNING_TIME + Number(timePeriod) * 25
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod) * 1000
   if (Math.abs(difference) < warningTime) {
-    const pronounces = ['Отлично! Продолжаем.', 'Совершенно верно! Продолжаем.', 'Отлично! Дальше.', 'Молоде\'ц! дальше.']
+    const pronounces = ['Отлично! Продолжаем.', 'Совершенно верно! Продолжаем.', 'Отлично! Дальше.', 'Молоде\'ц! Дальше.']
     const phrase = getRandomArrayItem(pronounces)
     await res.setPronounceText(phrase, { ssml: true })
     res.setEmotion('udovolstvie')
