@@ -9,7 +9,8 @@ const digits = [
   'две'
 ]
 const getRandomArrayItem = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)]
-const clearText = (str: string) => str.split('').filter(l => l !== '`' && l !== '\\').join('')
+const clearText = (str: string) => str.replace(/[\\\']/g, '')
+//str.split('').filter(l => l !== '`' && l !== '\\').join('')
 
 export const runAppHandler: SaluteHandler = ({ req, res }) => {
   start()
@@ -61,7 +62,7 @@ export const getStartSoundHandler: SaluteHandler = ({ req, res, session }) => {
   if (isGameStart) {
     res.appendCommand({
       type: 'CHANGE_PLAY_TAB_TEXT',
-      text: `Игра началась! ${req.request.payload.character.appeal === 'official' ? 'Нажмите' : 'Нажми'} на кнопку по истечении ${session.timePeriod} секунд`
+      text: `Игра началась! ${req.request.payload.character.appeal === 'official' ? 'Нажмите' : 'Нажми'} на кнопку по истечении ${session.timePeriod} секунд.`
     })
     session.isGameStart = false
   }
@@ -86,7 +87,7 @@ export const clickHandler: SaluteHandler = async ({ req, res, session }, dispatc
     if (dispatch) dispatch(['getStartSound'])
     session.countScore = Number(countScore) + 1
   } else if (Math.abs(difference) < errorTime) {
-    const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем', 'Небольшая ошибка, но сделаем вид что так и должно быть', 'Буквально на полсекундочки ошибся, ну ничего']
+    const pronounces = ['Почти получилось, но можно закрыть глаза. Продолжаем.', 'Небольшая ошибка, но сделаем вид что так и должно быть.', 'Буквально на полсекундочки ошибся, ну ничего.']
     const phrase = getRandomArrayItem(pronounces)
     await res.setPronounceText(phrase)
     res.appendCommand({

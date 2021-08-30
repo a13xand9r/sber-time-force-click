@@ -27,9 +27,6 @@ const Home: NextPage = () => {
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) {
         console.log(smart_app_data)
-        // if (smart_app_data.type === 'START_GAME'){
-        //   assistantRef.current?.sendAction({ type: 'GET_START_SOUND', payload: {}})
-        // }
         dispatch(smart_app_data)
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
           assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
@@ -41,12 +38,10 @@ const Home: NextPage = () => {
     })
   }, [])
   useEffect(() => {
-    // if (!state.isPlayMode){
-      dispatch(actions.changePlayTabContent(
-        `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
+    dispatch(actions.changePlayTabContent(
+      `Сейчас узнаем насколько хорошо ${state.character === 'joy' ? 'ты чувствуешь' : 'вы чувствуете'} время.
       Отсчет времени начнется после звукового сигнала.`
-      ))
-    // }
+    ))
   }, [state.character])
   const iconSelect = (tab: TabsType) => {
     switch (tab) {
@@ -56,14 +51,15 @@ const Home: NextPage = () => {
       case 'Лучший счет': return <IconAvatar />
     }
   }
-
+  const buttonRef = useRef<HTMLAnchorElement | HTMLButtonElement | HTMLSpanElement | null>()
+  useEffect(() => {
+    buttonRef.current?.focus()
+  }, [state.isClickDisabled])
   const onPlayClick = useCallback(() => {
     if (!state.isPlayMode) {
       dispatch(actions.setPlayMode(true))
-      // dispatch(actions.changePlayTabContent(`Игра началась! ${state.character === 'joy' ? 'Нажми' : 'Нажмите'} на кнопку по истечении ${state.timePeriod} секунд`))
       assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timePeriod: state.timePeriod } })
     } else {
-      // dispatch(actions.setClickDisable(true))
       assistantRef.current?.sendAction({ type: 'CLICK', payload: { timestamp: Date.now() } })
     }
     dispatch(actions.setClickDisable(true))
@@ -108,6 +104,8 @@ const Home: NextPage = () => {
               state.tab === 'Играть' &&
               <div className={style.playButton}>
                 <Button
+                  //@ts-ignore
+                  ref={buttonRef}
                   style={{ width: '100%' }}
                   text={state.isPlayMode ? 'Клик' : 'Играть'}
                   view='primary'
