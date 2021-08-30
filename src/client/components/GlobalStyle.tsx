@@ -24,7 +24,7 @@ const DocumentStyle = createGlobalStyle`
     }
     #__next{
       position: relative;
-      min-height: 100vh;
+      min-height: 95vh;
       padding-top: 1rem;
     }
 `
