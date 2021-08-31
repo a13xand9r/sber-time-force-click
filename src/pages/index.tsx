@@ -6,9 +6,9 @@ import style from '../client/styles/style.module.css'
 import { ContentCard } from '../client/components/ContentCard'
 import { GlobalStyles } from '../client/components/GlobalStyle'
 import { actions, initialState, reducer, StateType, tabs, TabsType } from '../client/store'
-import { createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
+import { AssistantAppState, createAssistant, createSmartappDebugger } from '@sberdevices/assistant-client'
 
-const initializeAssistant = (getState: () => StateType) => {
+const initializeAssistant = (getState: () => any) => {
   if (process.env.NODE_ENV === 'development') {
     return createSmartappDebugger({
       token: process.env.NEXT_PUBLIC_ASSISTANT_TOKEN ?? '',
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const assistantRef = useRef<ReturnType<typeof createAssistant>>()
   useEffect(() => {
-    assistantRef.current = initializeAssistant(() => state)
+    assistantRef.current = initializeAssistant(() => state.isPlayMode)
     assistantRef.current.on('data', ({ smart_app_data, type, character }: any) => {
       if (smart_app_data) {
         console.log(smart_app_data)

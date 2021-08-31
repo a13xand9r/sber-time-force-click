@@ -12,8 +12,9 @@ const getRandomArrayItem = (arr: any[]) => arr[Math.floor(Math.random() * arr.le
 const clearText = (str: string) => str.replace(/[\\\']/g, '')
 //str.split('').filter(l => l !== '`' && l !== '\\').join('')
 
-export const runAppHandler: SaluteHandler = ({ req, res }) => {
+export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
   start()
+  session.isGameMode = false
   res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
   res.appendBubble(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
 }
@@ -27,9 +28,27 @@ export const getScoreHandler: SaluteHandler = async ({ req, res, session }) => {
   })
 }
 
-export const noMatchHandler: SaluteHandler = ({ req, res }) => {
-  res.setPronounceText('Не совсем понимаю сказанное')
-  res.appendBubble('Не совсем понимаю сказанное')
+export const getScoreVoiceHandler: SaluteHandler = ({ req, res, session }) => {
+  const {globalScore} = session as {globalScore: number}
+  console.log('getScoreVoice')
+  res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Ваш' : 'Твой'} лучший счет ${globalScore}
+  ${globalScore === 1 ? 'очко' : globalScore <= 4 && globalScore >= 2 ? 'очка' : 'очков' }.`)
+}
+
+export const noMatchHandler: SaluteHandler = ({ req, res, session }) => {
+  const { isGameMode, timePeriod } = session
+  if (!isGameMode) {
+    if (req.request.payload.character.appeal === 'official') {
+      res.setPronounceText('Для начала игры перейдите на первую вкладку, но перед этим не забудьте выставить таймер в настройках')
+      res.appendBubble('Для начала игры перейдите на первую вкладку, но перед этим не забудьте выставить таймер в настройках')
+    } else {
+      res.setPronounceText('Для начала игры перейди на первую вкладку, но перед этим не забудь выставить таймер в настройках')
+      res.appendBubble('Для начала игры перейди на первую вкладку, но перед этим не забудь выставить таймер в настройках')
+    }
+  } else {
+      res.setPronounceText(`Необходимо нажать на кнопку Клик через ${timePeriod} секунд после старта`)
+      res.appendBubble(`Необходимо нажать на кнопку Клик через ${timePeriod} секунд после старта`)
+  }
 }
 
 export const startGameHandler: SaluteHandler = async ({ req, res, session }, dispatch) => {
@@ -37,6 +56,7 @@ export const startGameHandler: SaluteHandler = async ({ req, res, session }, dis
   session.timePeriod = timePeriod
   session.countScore = 0
   session.isGameStart = true
+  session.isGameMode = true
   const pronounces = ['Начали', 'Поехали', 'Начнем', 'Время пошло\'']
   // const pronounces = ['<speak><audio text="sm-sounds-game-8-bit-coin-1"/></speak>']
   await res.setPronounceText(getRandomArrayItem(pronounces), { ssml: true })
@@ -129,17 +149,26 @@ export const clickHandler: SaluteHandler = async ({ req, res, session }, dispatc
       })
       res.setEmotion('nesoglasie')
     }
-    if (Number(globalScore) < Number(countScore)) {
-      session.globalScore = countScore
-      res.appendCommand({
-        type: 'CHANGE_SCORE',
-        score: Number(countScore)
-      })
-      changeScore(req.request.uuid.sub, Number(countScore))
-    }
+    // if (Number(globalScore) < Number(countScore)) {
+    //   session.globalScore = countScore
+    //   res.appendCommand({
+    //     type: 'CHANGE_SCORE',
+    //     score: Number(countScore)
+    //   })
+    //   changeScore(req.request.uuid.sub, Number(countScore))
+    // }
     res.appendCommand({
       type: 'SET_PLAY_MODE',
       flag: false
     })
+    session.isGameMode = false
+  }
+  if (Number(globalScore) < Number(countScore)) {
+    session.globalScore = countScore
+    res.appendCommand({
+      type: 'CHANGE_SCORE',
+      score: Number(countScore)
+    })
+    changeScore(req.request.uuid.sub, Number(countScore))
   }
 }

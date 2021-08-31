@@ -1,9 +1,12 @@
-import { createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
+import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
+import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { clickHandler, getScoreHandler, getStartSoundHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
+import { clickHandler, getScoreHandler, getScoreVoiceHandler, getStartSoundHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
+import model from '../intents.json'
 
+const intents = createIntents(model.intents)
 const storage = new SaluteMemoryStorage()
-const { action } = createMatchers<SaluteRequest>()
+const { action, intent } = createMatchers<SaluteRequest, typeof intents>()
 
 const userScenario = createUserScenario({
   getClick: {
@@ -25,6 +28,10 @@ const userScenario = createUserScenario({
   getStartSound: {
     match: action('GET_START_SOUND'),
     handle: getStartSoundHandler
+  },
+  getScoreVoice: {
+    match: intent('/счет', {confidence: 0.2}),
+    handle: getScoreVoiceHandler
   }
 })
 
@@ -34,6 +41,8 @@ const systemScenario = createSystemScenario({
 })
 
 const scenarioWalker = createScenarioWalker({
+  recognizer: new SmartAppBrainRecognizer(process.env.NEXT_PUBLIC_SMART_BRAIN),
+  intents,
   systemScenario,
   userScenario
 })

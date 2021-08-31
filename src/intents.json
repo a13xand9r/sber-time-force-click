@@ -1,0 +1,42 @@
+{
+  "intents": {
+    "/счет": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "счёт"
+        },
+        {
+          "type": "phrase",
+          "rule": "какой мой счёт"
+        },
+        {
+          "type": "phrase",
+          "rule": "мой счёт"
+        },
+        {
+          "type": "phrase",
+          "rule": "лучший счёт"
+        },
+        {
+          "type": "phrase",
+          "rule": "счет"
+        },
+        {
+          "type": "phrase",
+          "rule": "лучший счет"
+        },
+        {
+          "type": "phrase",
+          "rule": "мой счет"
+        },
+        {
+          "type": "phrase",
+          "rule": "лушчий"
+        }
+      ],
+      "variables": {}
+    }
+  },
+  "entities": {}
+}
