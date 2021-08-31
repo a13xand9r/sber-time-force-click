@@ -92,6 +92,10 @@
         {
           "type": "phrase",
           "rule": "какие правила"
+        },
+        {
+          "type": "phrase",
+          "rule": "как играть"
         }
       ],
       "variables": {}
