@@ -67,6 +67,14 @@
         {
           "type": "phrase",
           "rule": "таймер"
+        },
+        {
+          "type": "phrase",
+          "rule": "изменить таймер"
+        },
+        {
+          "type": "phrase",
+          "rule": "изменить настройки"
         }
       ],
       "variables": {}

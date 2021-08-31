@@ -15,6 +15,7 @@ const clearText = (str: string) => str.replace(/[\\\']/g, '')
 export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
   start()
   session.isGameMode = false
+  res.appendSuggestions(['Играть', 'Изменить настройки', 'Выйти'])
   res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
   res.appendBubble(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
 }
@@ -29,30 +30,42 @@ export const getScoreHandler: SaluteHandler = async ({ req, res, session }) => {
 }
 
 export const getScoreVoiceHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendSuggestions(['Изменить настройки', 'Выйти'])
+  res.appendCommand({
+    type: 'CHANGE_TAB',
+    tab: 'Лучший счет'
+  })
   const {globalScore} = session as {globalScore: number}
   res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Ваш' : 'Твой'} лучший счет ${globalScore}
   ${globalScore === 1 ? 'очко' : globalScore <= 4 && globalScore >= 2 ? 'очка' : 'очков' }.`)
 }
 
 export const goRulesHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendSuggestions(['Мой лучший счёт', 'Выйти'])
   res.appendCommand({
     type: 'CHANGE_TAB',
     tab: 'Правила'
   })
 }
 export const goSettingsHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendSuggestions(['Какие правила', 'Выйти'])
   res.appendCommand({
     type: 'CHANGE_TAB',
     tab: 'Настройки'
   })
 }
 export const letsPlayHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendSuggestions(['Выйти'])
+  const pronounces = ['Начали', 'Поехали', 'Начнем']
+  // const pronounces = ['<speak><audio text="sm-sounds-game-8-bit-coin-1"/></speak>']
+  res.setPronounceText(getRandomArrayItem(pronounces), { ssml: true })
   res.appendCommand({
     type: 'LETS_PLAY_VOICE'
   })
 }
 
 export const noMatchHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendSuggestions(['Какие правила', 'Выйти'])
   const { isGameMode, timePeriod } = session
   if (!isGameMode) {
     if (req.request.payload.character.appeal === 'official') {
@@ -68,7 +81,7 @@ export const noMatchHandler: SaluteHandler = ({ req, res, session }) => {
   }
 }
 
-export const startGameHandler: SaluteHandler = async ({ req, res, session }, dispatch) => {
+export const startGameHandler: SaluteHandler = ({ req, res, session }, dispatch) => {
   const { timePeriod } = req.variables
   session.timePeriod = timePeriod
   session.countScore = 0
@@ -76,7 +89,7 @@ export const startGameHandler: SaluteHandler = async ({ req, res, session }, dis
   session.isGameMode = true
   const pronounces = ['Начали', 'Поехали', 'Начнем', 'Время пошло\'']
   // const pronounces = ['<speak><audio text="sm-sounds-game-8-bit-coin-1"/></speak>']
-  await res.setPronounceText(getRandomArrayItem(pronounces), { ssml: true })
+  res.setPronounceText(getRandomArrayItem(pronounces), { ssml: true })
   // res.appendCommand({type: 'START_GAME'})
   if (dispatch) {
     dispatch(['getStartSound'])
@@ -112,6 +125,7 @@ export const clickHandler: SaluteHandler = async ({ req, res, session }, dispatc
   const warningTime = WARNING_TIME + Number(timePeriod) * 25
   const userClickPeriod = Number(timestamp) - Number(timestampStart)
   const difference = userClickPeriod - Number(timePeriod) * 1000
+  res.appendSuggestions(['Изменить настройки', 'Выйти'])
   if (Math.abs(difference) < warningTime) {
     const pronounces = ['Отлично! Продолжаем.', 'Совершенно верно! Продолжаем.', 'Отлично! Дальше.', 'Молоде\'ц! Дальше.']
     const phrase = getRandomArrayItem(pronounces)
