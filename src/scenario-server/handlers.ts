@@ -16,8 +16,8 @@ export const runAppHandler: SaluteHandler = ({ req, res, session }) => {
   start()
   session.isGameMode = false
   res.appendSuggestions(['Играть', 'Изменить настройки', 'Выйти'])
-  res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
-  res.appendBubble(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время.`)
+  res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время. В настройках можно настроить таймер и начать играть. При нынешних настройках нужно самому отсчитывать и нажимать на кнопку каждые 5 секунд.`)
+  res.appendBubble(`${req.request.payload.character.appeal === 'official' ? 'Здравствуйте, я помогу вам' : 'Привет, я помогу тебе'} начать лучше чувствовать время. В настройках можно настроить таймер и начать играть. При нынешних настройках нужно самому отсчитывать и нажимать на кнопку каждые 5 секунд.`)
 }
 
 export const getScoreHandler: SaluteHandler = async ({ req, res, session }) => {

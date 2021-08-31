@@ -19,9 +19,9 @@ const DocumentStyle = createGlobalStyle`
       min-height: 100vh;
       max-width: 100vw;
       color: ${text};
-      background-color: #2e0053;
-      /* background-color: ${background}; */
-      /* background-image: ${gradient}; */
+      /* background-color: #2e0053; */
+      background-color: ${background};
+      background-image: ${gradient};
     }
     #__next{
       position: relative;
