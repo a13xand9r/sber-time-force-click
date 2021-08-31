@@ -1,7 +1,7 @@
 import { SmartAppBrainRecognizer } from '@salutejs/recognizer-smartapp-brain'
 import { createIntents, createMatchers, createSaluteRequest, createSaluteResponse, createScenarioWalker, createSystemScenario, createUserScenario, NLPRequest, NLPResponse, SaluteRequest } from '@salutejs/scenario'
 import { SaluteMemoryStorage } from '@salutejs/storage-adapter-memory'
-import { clickHandler, getScoreHandler, getScoreVoiceHandler, getStartSoundHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
+import { clickHandler, getScoreHandler, getScoreVoiceHandler, getStartSoundHandler, goRulesHandler, goSettingsHandler, letsPlayHandler, noMatchHandler, runAppHandler, startGameHandler, startNewClickHandler } from './handlers'
 import model from '../intents.json'
 
 const intents = createIntents(model.intents)
@@ -32,6 +32,18 @@ const userScenario = createUserScenario({
   getScoreVoice: {
     match: intent('/счет', {confidence: 0.2}),
     handle: getScoreVoiceHandler
+  },
+  goRules: {
+    match: intent('/правила', {confidence: 0.2}),
+    handle: goRulesHandler
+  },
+  goSettings: {
+    match: intent('/настройки', {confidence: 0.2}),
+    handle: goSettingsHandler
+  },
+  letsPlay: {
+    match: intent('/играть', {confidence: 0.2}),
+    handle: letsPlayHandler
   }
 })
 

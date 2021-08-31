@@ -30,6 +30,11 @@ const Home: NextPage = () => {
         dispatch(smart_app_data)
         smart_app_data.type === 'SET_CLICK_DISABLE' &&
           assistantRef.current?.sendAction({ type: 'START_NEW_CLICK', payload: { timestamp: Date.now() } })
+        if (smart_app_data.type === 'LETS_PLAY_VOICE'){
+          dispatch(actions.changeTab('Играть'))
+          dispatch(actions.setPlayMode(true))
+          assistantRef.current?.sendAction({ type: 'START_GAME', payload: { timePeriod: state.timePeriod } })
+        }
       }
       if (type === 'character') {
         dispatch(actions.setCharacter(character.id))

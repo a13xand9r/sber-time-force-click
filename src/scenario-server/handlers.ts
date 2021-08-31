@@ -30,9 +30,26 @@ export const getScoreHandler: SaluteHandler = async ({ req, res, session }) => {
 
 export const getScoreVoiceHandler: SaluteHandler = ({ req, res, session }) => {
   const {globalScore} = session as {globalScore: number}
-  console.log('getScoreVoice')
   res.setPronounceText(`${req.request.payload.character.appeal === 'official' ? 'Ваш' : 'Твой'} лучший счет ${globalScore}
   ${globalScore === 1 ? 'очко' : globalScore <= 4 && globalScore >= 2 ? 'очка' : 'очков' }.`)
+}
+
+export const goRulesHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendCommand({
+    type: 'CHANGE_TAB',
+    tab: 'Правила'
+  })
+}
+export const goSettingsHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendCommand({
+    type: 'CHANGE_TAB',
+    tab: 'Настройки'
+  })
+}
+export const letsPlayHandler: SaluteHandler = ({ req, res, session }) => {
+  res.appendCommand({
+    type: 'LETS_PLAY_VOICE'
+  })
 }
 
 export const noMatchHandler: SaluteHandler = ({ req, res, session }) => {

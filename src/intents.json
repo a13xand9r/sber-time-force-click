@@ -36,6 +36,57 @@
         }
       ],
       "variables": {}
+    },
+    "/играть": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "играть"
+        },
+        {
+          "type": "phrase",
+          "rule": "начнем игру"
+        },
+        {
+          "type": "phrase",
+          "rule": "давай играть"
+        }
+      ],
+      "variables": {}
+    },
+    "/настройки": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "настройки"
+        },
+        {
+          "type": "phrase",
+          "rule": "изменить время"
+        },
+        {
+          "type": "phrase",
+          "rule": "таймер"
+        }
+      ],
+      "variables": {}
+    },
+    "/правила": {
+      "matchers": [
+        {
+          "type": "phrase",
+          "rule": "правила"
+        },
+        {
+          "type": "phrase",
+          "rule": "открой правила"
+        },
+        {
+          "type": "phrase",
+          "rule": "какие правила"
+        }
+      ],
+      "variables": {}
     }
   },
   "entities": {}
